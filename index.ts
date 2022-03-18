@@ -14,16 +14,6 @@ bot.command("start", (ctx) => {
   ctx.reply("Иди нахуй");
 });
 
-bot.on("text", async (ctx) => {
-  try {
-    if (ctx.message.from.username === "kosmonaff") {
-      ctx.reply("не гавкай. Если хочешь это убрать запушь фикс)", {
-        reply_to_message_id: ctx.message.message_id,
-      });
-    }
-  } catch (err) {}
-});
-
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
