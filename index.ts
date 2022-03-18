@@ -11,7 +11,17 @@ bot.launch().then(() => {
 });
 
 bot.command("start", (ctx) => {
-  ctx.reply("Иди нахуй");
+  ctx.reply("Я люблю тебя");
+});
+
+bot.on("text", async (ctx) => {
+  try {
+    if (ctx.message.from.username === "kosmonaff") {
+      ctx.reply("не гавкай. Если хочешь это убрать запушь фикс)", {
+        reply_to_message_id: ctx.message.message_id,
+      });
+    }
+  } catch (err) {}
 });
 
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
