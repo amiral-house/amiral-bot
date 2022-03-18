@@ -1,6 +1,7 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
+import http from "http";
 
 dotenv.config();
 
@@ -22,10 +23,13 @@ bot.command("start", (ctx) => {
   }
 });
 
-
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+http
+  .createServer(bot.webhookCallback("/secret-path"))
+  .listen(process.env.PORT || 3001);
