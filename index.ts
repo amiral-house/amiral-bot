@@ -23,6 +23,12 @@ bot.command("start", (ctx) => {
   }
 });
 
+bot.hears(/я гей/, (ctx) => {
+  ctx.reply("Да тут все геи, не только ты <3", {
+    reply_to_message_id: ctx.message.message_id,
+  });
+});
+
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
