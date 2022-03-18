@@ -7,5 +7,13 @@ const bot = new Telegraf(process.env.BOT_TOKEN || "");
 
 bot.launch();
 
+bot.command("start", (ctx) => {
+  ctx.reply("Иди нахуй");
+});
+
+bot.on("text", (ctx) => {
+  ctx.reply("Что ты там написал?");
+});
+
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
