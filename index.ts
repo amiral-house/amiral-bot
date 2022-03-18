@@ -1,5 +1,6 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
+import { useTiktok } from "./src/modules/tiktok";
 
 dotenv.config();
 
@@ -13,9 +14,9 @@ bot.command("start", (ctx) => {
   ctx.reply("Иди нахуй");
 });
 
-bot.on("text", (ctx) => {
-  ctx.reply("Что ты там написал?");
-});
+bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
+  useTiktok(ctx, ctx.message.text)
+);
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));

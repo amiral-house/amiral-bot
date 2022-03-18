@@ -4,12 +4,19 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "target": "ES2019",
+    "target": "es6",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noErrorTruncation": true,
     "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "lib": ["es2017"],
     "outDir": "./build"
   },
-  "include": ["index.ts"]
+  "include": ["index.ts", "./src/**/*.ts"]
 }
