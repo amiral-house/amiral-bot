@@ -47,5 +47,3 @@ bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
-
-http.createServer(bot.webhookCallback(HOOK_PATH)).listen(PORT);
