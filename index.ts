@@ -5,11 +5,23 @@ import http from "http";
 
 dotenv.config();
 
+const PORT = Number(process.env.PORT) || 3001;
+const DOMAIN = "https://amiral-bot.herokuapp.com";
+const HOOK_PATH = "/bot-polling";
+
 const bot = new Telegraf(process.env.BOT_TOKEN || "");
 
-bot.launch().then(() => {
-  console.log("Bot started");
-});
+bot
+  .launch({
+    webhook: {
+      domain: DOMAIN,
+      port: PORT,
+      hookPath: HOOK_PATH,
+    },
+  })
+  .then(() => {
+    console.log("Bot started");
+  });
 
 bot.command("start", (ctx) => {
   if (ctx.message.from.username === "kosmonaff") {
@@ -36,6 +48,4 @@ bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
 
-http
-  .createServer(bot.webhookCallback("/secret-path"))
-  .listen(process.env.PORT || 3001);
+http.createServer(bot.webhookCallback(HOOK_PATH)).listen(PORT);
