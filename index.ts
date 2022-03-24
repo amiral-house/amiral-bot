@@ -1,24 +1,28 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
-import http from "http";
+const isProd = process.env.NODE_ENV === "production";
 
 dotenv.config();
 
-const PORT = Number(process.env.PORT) || 3001;
+const PORT = Number(process.env.PORT) || 3002;
 const DOMAIN = "https://amiral-bot.herokuapp.com";
 const HOOK_PATH = "/bot-polling";
 
 const bot = new Telegraf(process.env.BOT_TOKEN || "");
 
 bot
-  .launch({
-    webhook: {
-      domain: DOMAIN,
-      port: PORT,
-      hookPath: HOOK_PATH,
-    },
-  })
+  .launch(
+    isProd
+      ? {
+          webhook: {
+            domain: DOMAIN,
+            port: PORT,
+            hookPath: HOOK_PATH,
+          },
+        }
+      : undefined
+  )
   .then(() => {
     console.log("Bot started");
   });

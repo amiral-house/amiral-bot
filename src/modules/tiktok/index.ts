@@ -1,15 +1,23 @@
 import { Context } from "telegraf";
-const TikTokScraper = require("tiktok-scraper");
+import * as tt from "tiktok-scraper";
+const unshorted = require("unshorten.it");
 
-const getVideoUrl = (url: string): Promise<string> => {
-  return TikTokScraper.getVideoMeta(url).then((data: any) => {
-    const info = data.collector.pop();
-    return info.videoUrl;
+const getVideoUrl = async (url: string): Promise<string> => {
+  const originalLink = await unshorted(url);
+  const videoMetaData = await tt.getVideoMeta(originalLink, {
+    noWaterMark: true,
   });
+  const info = videoMetaData.collector.pop();
+  return info?.videoUrlNoWaterMark || info?.videoUrl || "";
 };
 
 export const useTiktok = async (ctx: Context, url: string) => {
-  const videoUrl = await getVideoUrl(url);
-
-  ctx.replyWithVideo(videoUrl);
+  try {
+    console.log(url);
+    const videoUrl = await getVideoUrl(url);
+    ctx.replyWithVideo(videoUrl);
+  } catch (err) {
+    console.log(err);
+    ctx.reply("Произошла ошибка :(");
+  }
 };
