@@ -1,13 +1,15 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
-const isProd = process.env.NODE_ENV === "production";
+import { useHttpCat } from "./src/modules/http-cat";
 
 dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3002;
 const DOMAIN = "https://amiral-bot.herokuapp.com";
 const HOOK_PATH = "/bot-polling";
+
+const isProd = process.env.NODE_ENV === "production";
 
 const bot = new Telegraf(process.env.BOT_TOKEN || "");
 
@@ -48,6 +50,10 @@ bot.hears(/я гей/gim, (ctx) => {
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
+
+bot.hears(/^http (\d+)$/gim, (ctx) => {
+  useHttpCat(ctx, Number(ctx.match[1]));
+});
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
