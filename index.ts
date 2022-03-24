@@ -55,7 +55,7 @@ bot.hears(/^http (\d+)$/gim, (ctx) => {
   useHttpCat(ctx, Number(ctx.match[1]));
 });
 
-bot.hears(/^((\s*?)(а че\??)|(а чё\??)(\s*?))+$/gim, (ctx) => {
+bot.hears(/^((\s*?)(а ч(е|ё|о)\??)(\s*?))+$/gim, (ctx) => {
   ctx.reply("А ниче, нормально общайся", {
     reply_to_message_id: ctx.message.message_id,
   });
