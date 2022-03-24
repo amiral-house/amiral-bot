@@ -1,9 +1,8 @@
 {
   "name": "amiral-bot",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "index.js",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "ts-node-dev index.ts",
     "start": "node build/index.js",
