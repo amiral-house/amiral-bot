@@ -30,15 +30,9 @@ bot
   });
 
 bot.command("start", (ctx) => {
-  if (ctx.message.from.username === "kosmonaff") {
-    ctx.reply("Ты еблан и это не обсуждается!", {
-      reply_to_message_id: ctx.message.message_id,
-    });
-  } else {
     ctx.reply("Я люблю тебя!", {
       reply_to_message_id: ctx.message.message_id,
     });
-  }
 });
 
 bot.hears(/я гей/gim, (ctx) => {
