@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "composite": true,
     "declaration": true,
     "declarationMap": true,
@@ -18,5 +18,5 @@
     "lib": ["es2017"],
     "outDir": "./build"
   },
-  "include": ["index.ts", "./src/**/*.ts"]
+  "include": ["./index.ts", "./src/**/*.ts", "./index.d.ts"]
 }

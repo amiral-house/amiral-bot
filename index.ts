@@ -3,26 +3,48 @@ import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
 import { musicSevices }  from "./src/modules/music";
 import http from "http";
+import { useHttpCat } from "./src/modules/http-cat";
+import { TYPE_ANIMAL, useAnimal } from "./src/modules/animal";
 
 dotenv.config();
 
+const PORT = Number(process.env.PORT) || 3002;
+const DOMAIN = "https://amiral-bot.herokuapp.com";
+const HOOK_PATH = "/bot-polling";
+
+const isProd = process.env.NODE_ENV === "production";
+
 const bot = new Telegraf(process.env.BOT_TOKEN || "");
 
-bot.launch().then(() => {
-  console.log("Bot started");
-});
+bot
+  .launch(
+    isProd
+      ? {
+          webhook: {
+            domain: DOMAIN,
+            port: PORT,
+            hookPath: HOOK_PATH,
+          },
+        }
+      : undefined
+  )
+  .then(() => {
+    console.log("Bot started");
+  });
+
+// -------- command ---------
 
 bot.command("start", (ctx) => {
-  if (ctx.message.from.username === "kosmonaff") {
-    ctx.reply("Ты еблан и это не обсуждается!", {
-      reply_to_message_id: ctx.message.message_id,
-    });
-  } else {
     ctx.reply("Я люблю тебя!", {
       reply_to_message_id: ctx.message.message_id,
     });
-  }
 });
+
+bot.command(['woof', 'meow'], (ctx) => {
+  useAnimal(ctx, ctx.message.text as TYPE_ANIMAL);
+});
+
+// -------- hears ---------
 
 bot.hears(/я гей/gim, (ctx) => {
   ctx.reply("Да тут все геи, не только ты <3", {
@@ -44,9 +66,17 @@ bot.hears(/^(?:[^:]+:\/\/)?([^.\/?#]+\.)*([^.\/?#]+)\.([^.\/?#]+)(?:$|[\/?#])/gi
   
 });
 
+bot.hears(/^http (\d+)$/gim, (ctx) => {
+  useHttpCat(ctx, Number(ctx.match[1]));
+});
+
+bot.hears(/^((\s*?)(а(\s*)ч(е|ё|о|у)+\??)(\s*?))+$/gim, (ctx) => {
+  ctx.reply("А ниче, нормально общайся", {
+    reply_to_message_id: ctx.message.message_id,
+  });
+});
+
+// ----------------------------------
+
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
-
-http
-  .createServer(bot.webhookCallback("/secret-path"))
-  .listen(process.env.PORT || 3001);
