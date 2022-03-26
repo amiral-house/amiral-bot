@@ -2,7 +2,7 @@ import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
 import { useHttpCat } from "./src/modules/http-cat";
-import { useWoof } from "./src/modules/woof";
+import { TYPE_ANIMAL, useAnimal } from "./src/modules/animal";
 
 dotenv.config();
 
@@ -36,8 +36,8 @@ bot.command("start", (ctx) => {
     });
 });
 
-bot.command("woof", (ctx) => {
-  useWoof(ctx);
+bot.command(['woof', 'meow'], (ctx) => {
+  useAnimal(ctx, ctx.message.text as TYPE_ANIMAL);
 });
 
 bot.hears(/я гей/gim, (ctx) => {
