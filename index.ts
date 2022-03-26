@@ -30,6 +30,8 @@ bot
     console.log("Bot started");
   });
 
+// -------- command ---------
+
 bot.command("start", (ctx) => {
     ctx.reply("Я люблю тебя!", {
       reply_to_message_id: ctx.message.message_id,
@@ -39,6 +41,8 @@ bot.command("start", (ctx) => {
 bot.command(['woof', 'meow'], (ctx) => {
   useAnimal(ctx, ctx.message.text as TYPE_ANIMAL);
 });
+
+// -------- hears ---------
 
 bot.hears(/я гей/gim, (ctx) => {
   ctx.reply("Да тут все геи, не только ты <3", {
@@ -59,6 +63,8 @@ bot.hears(/^((\s*?)(а(\s*)ч(е|ё|о|у)+\??)(\s*?))+$/gim, (ctx) => {
     reply_to_message_id: ctx.message.message_id,
   });
 });
+
+// ----------------------------------
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
