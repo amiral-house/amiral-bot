@@ -1,6 +1,7 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
+import { musicSevices }  from "./src/modules/music";
 import http from "http";
 
 dotenv.config();
@@ -32,6 +33,16 @@ bot.hears(/я гей/gim, (ctx) => {
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
+
+bot.hears(/^(?:[^:]+:\/\/)?([^.\/?#]+\.)*([^.\/?#]+)\.([^.\/?#]+)(?:$|[\/?#])/gim, async (ctx) => {
+
+  const musicSevicesClass = new musicSevices();
+  const result = await musicSevicesClass.parseMusicMessage(ctx.message.text);
+  ctx.reply(result, {
+    reply_to_message_id: ctx.message.message_id,
+  });
+  
+});
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
