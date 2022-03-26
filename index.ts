@@ -1,6 +1,8 @@
 import { Telegraf } from "telegraf";
 import * as dotenv from "dotenv";
 import { useTiktok } from "./src/modules/tiktok";
+import { musicSevices }  from "./src/modules/music";
+import http from "http";
 import { useHttpCat } from "./src/modules/http-cat";
 import { TYPE_ANIMAL, useAnimal } from "./src/modules/animal";
 
@@ -53,6 +55,16 @@ bot.hears(/я гей/gim, (ctx) => {
 bot.hears(/^(https:\/\/(\w+\.)?tiktok.com\/)/, (ctx) =>
   useTiktok(ctx, ctx.message.text)
 );
+
+bot.hears(/^(?:[^:]+:\/\/)?([^.\/?#]+\.)*([^.\/?#]+)\.([^.\/?#]+)(?:$|[\/?#])/gim, async (ctx) => {
+
+  const musicSevicesClass = new musicSevices();
+  const result = await musicSevicesClass.parseMusicMessage(ctx.message.text);
+  ctx.reply(result, {
+    reply_to_message_id: ctx.message.message_id,
+  });
+  
+});
 
 bot.hears(/^http (\d+)$/gim, (ctx) => {
   useHttpCat(ctx, Number(ctx.match[1]));
