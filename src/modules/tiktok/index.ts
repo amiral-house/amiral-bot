@@ -1,24 +1,24 @@
 import { Context } from "telegraf";
-// import * as tt from "tiktok-scraper";
-const unshorted = require("unshorten.it");
+import axios from "axios";
+import { parse } from "node-html-parser";
 
 const getVideoUrl = async (url: string): Promise<string> => {
-  // const originalLink = await unshorted(url);
-  // const videoMetaData = await tt.getVideoMeta(originalLink, {
-  //   noWaterMark: true,
-  // });
-  // const info = videoMetaData.collector.pop();
-  // return info?.videoUrlNoWaterMark || info?.videoUrl || "";
-  return "";
+  const html = await axios
+    .get(url, { responseType: "text" })
+    .then((res) => res.data);
+  const document = parse(html);
+  const json = JSON.parse(
+    document?.querySelector('script[id="SIGI_STATE"]')?.innerText || "{}"
+  );
+
+  return json.ItemModule[json.ItemList.video.keyword].video.downloadAddr;
 };
 
 export const useTiktok = async (ctx: Context, url: string) => {
   try {
-    // console.log(url);
     const videoUrl = await getVideoUrl(url);
     ctx.replyWithVideo(videoUrl);
   } catch (err) {
-    // console.log(err);
     ctx.reply("Произошла ошибка :(");
   }
 };
