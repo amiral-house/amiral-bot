@@ -7,7 +7,7 @@ import { TYPE_ANIMAL, useAnimal } from "./src/modules/animal";
 dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3002;
-const DOMAIN = "https://amiral-bot.herokuapp.com";
+const DOMAIN = "https://amiralbot.herokuapp.com";
 const HOOK_PATH = "/bot-polling";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -33,12 +33,12 @@ bot
 // -------- command ---------
 
 bot.command("start", (ctx) => {
-    ctx.reply("Я люблю тебя!", {
-      reply_to_message_id: ctx.message.message_id,
-    });
+  ctx.reply("Я люблю тебя!", {
+    reply_to_message_id: ctx.message.message_id,
+  });
 });
 
-bot.command(['woof', 'meow'], (ctx) => {
+bot.command(["woof", "meow"], (ctx) => {
   useAnimal(ctx, ctx.message.text as TYPE_ANIMAL);
 });
 
